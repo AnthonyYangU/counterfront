@@ -83,7 +83,7 @@
                         <svg v-if = "scope.row.status=='0'" class="icon" aria-hidden="true">
                             <use xlink:href="#icon-ok"></use>
                         </svg>
-                        <svg v-if="scope.row.status=='1'" class="icon" aria-hidden="true">
+                        <svg v-else-if="scope.row.status=='1'" class="icon" aria-hidden="true">
                             <use xlink:href="#icon-sharpicons_warning"></use>
                         </svg>
                         <svg v-else-if="scope.row.status=='2'" class="icon" aria-hidden="true">
