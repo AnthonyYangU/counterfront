@@ -25,7 +25,7 @@ Vue.use(VueRouter)
       {
         path:'/table',
         component:()=>import('../components/Table.vue'),
-        meta: {requiresAuth:true,title:'数据表格'}
+        meta: {requiresAuth:true,title:'设备总表'}
       },
       {
         path:'/history',

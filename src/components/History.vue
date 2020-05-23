@@ -3,11 +3,36 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>历史数据</el-breadcrumb-item>
+          <div class="legend">
+            <span style="font-size:18px">图例:</span>
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ok"></use>
+            </svg>
+            <span>正常</span>
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-low_battery"></use>
+            </svg>    
+            <span>电量低</span> 
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-sharpicons_warning"></use>
+            </svg>
+            <span>计数器内部故障</span>
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-warning"></use>
+            </svg>
+            <span>计数器网络故障</span>
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ava_error"></use>
+            </svg>
+            <span>卡阻</span>
+          </div>
       </el-breadcrumb>
     </div>
 
     <div class="container">
       <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
+                :row-class-name="tableRowClassName"
+                :header-cell-style="headerRowClass"
                 style="width: 100%">
         <el-table-column prop="id"
                          label="Id"
@@ -33,6 +58,10 @@
                          label="Status"
                          align="center">
           <template slot-scope="scope">
+            <svg v-if = "scope.row.battery<'3.00'" class="icon" aria-hidden="true">
+                <use xlink:href="#icon-low_battery"></use>
+            </svg>
+            &nbsp;            
             <svg v-if="scope.row.status=='0'"
                  class="icon"
                  aria-hidden="true">
@@ -92,7 +121,7 @@
         </el-col>
       </el-row>
       <br>
-      <button @click="drawChart">test</button>
+      <!-- <button @click="drawChart">test</button> -->
     </div>
     <!-- <button @click="searchDetail">test</button> -->
   </div>
@@ -118,6 +147,22 @@ export default {
   computed: {
   },
   methods: {
+    tableRowClassName({row, rowIndex}) {
+        if(row);
+        if (rowIndex%2 == 1) {
+        return 'success-row';
+        } else{
+            return '';
+        }
+    },
+    headerRowClass({row, column, rowIndex, columnIndex}){
+    //表头的背景颜色
+        if(row||column||columnIndex);
+
+        if(rowIndex==0){
+            return 'background:oldlace'
+        }
+    },
     search () {
       if (this.selectDevice == '') {
         return
@@ -214,7 +259,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .title {
   font-weight: 400;
   line-height: 50px;
@@ -226,5 +271,14 @@ export default {
 .echart {
   width: 100%;
   height: 500px;
+}
+
+.legend{
+    float:right;
+    margin-right:10px;
+    line-height: 100%;
+    span{
+        margin-right: 10px;
+    }
 }
 </style>

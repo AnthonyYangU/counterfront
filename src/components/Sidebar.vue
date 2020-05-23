@@ -42,7 +42,7 @@
                     {
                         icon: 'el-icon-tickets',
                         index: 'table',
-                        title: '数据表格'
+                        title: '设备总表'
                     },
                     // {
                     //     icon: 'el-icon-pie-chart',

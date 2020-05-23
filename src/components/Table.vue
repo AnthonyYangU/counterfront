@@ -2,13 +2,17 @@
     <div class="table">
         <div class="crumbs">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>数据表格</el-breadcrumb-item>
+                <el-breadcrumb-item>设备总表</el-breadcrumb-item>
             <div class="legend">
                 <span style="font-size:18px">图例:</span>
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-ok"></use>
                 </svg>
                 <span>正常</span>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-low_battery"></use>
+                </svg>    
+                <span>电量低</span>            
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-sharpicons_warning"></use>
                 </svg>
@@ -28,8 +32,10 @@
 
 
             <el-table
+            :row-class-name="tableRowClassName"
+            :header-cell-style="headerRowClass"
             :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            style="width: 100%" @selection-change="handleSelectionChange">
+            style="width: 100%" @selection-change="handleSelectionChange" >
                     <!-- <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -43,13 +49,13 @@
                  
                 <el-table-column
                     prop="deviceId"
-                    label="DeviceId"
+                    label="IMEI Code"
                     align="center">
                 </el-table-column>
 
                 <el-table-column
                     prop="count"
-                    label="Count"
+                    label="Move Count"
                     align="center">
                 </el-table-column>
 
@@ -61,7 +67,7 @@
 
                 <el-table-column
                     prop="date"
-                    label="Date"
+                    label="Time"
                     align="center">
                 </el-table-column>
 
@@ -70,10 +76,14 @@
                     label="Status"
                     align="center">
                     <template slot-scope="scope">
+                        <svg v-if = "scope.row.battery<'3.00'" class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-low_battery"></use>
+                        </svg>
+                        &nbsp;
                         <svg v-if = "scope.row.status=='0'" class="icon" aria-hidden="true">
                             <use xlink:href="#icon-ok"></use>
                         </svg>
-                        <svg v-else-if="scope.row.status=='1'" class="icon" aria-hidden="true">
+                        <svg v-if="scope.row.status=='1'" class="icon" aria-hidden="true">
                             <use xlink:href="#icon-sharpicons_warning"></use>
                         </svg>
                         <svg v-else-if="scope.row.status=='2'" class="icon" aria-hidden="true">
@@ -81,7 +91,8 @@
                         </svg>
                         <svg v-else class="icon handlefull" aria-hidden="true">
                             <use xlink:href="#icon-ava_error"></use>
-                        </svg>                                                            
+                        </svg>
+                                                             
                     </template>
                 </el-table-column>
 
@@ -157,6 +168,13 @@
         },
         mounted(){
             this.init();
+            this.initTimer = setInterval(()=>{
+                this.init();
+            },60000);
+        },
+        beforeDestroy(){
+            clearInterval(this.initTimer);
+            this.initTimer = null;
         },
         methods: {
                 init(){
@@ -196,6 +214,22 @@
                             this.tableData = [];
                         }
                     })                    
+                },
+                tableRowClassName({row, rowIndex}) {
+                    if(row);
+                    if (rowIndex%2 == 1) {
+                    return 'success-row';
+                    } else{
+                        return '';
+                    }
+                },
+                headerRowClass({row, column, rowIndex, columnIndex}){
+                //表头的背景颜色
+                    if(row||column||columnIndex);
+
+                    if(rowIndex==0){
+                        return 'background:oldlace'
+                    }
                 },
                 handleSelectionChange(val) {
                     this.selectDel = val
@@ -319,7 +353,10 @@
 
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
     .handle-box {
         margin-bottom: 20px;
     }
