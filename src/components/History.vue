@@ -101,7 +101,7 @@
         </el-row>
       </el-card>
 
-      <!-- <div class="title">设备号：{{deviceId}} &nbsp;&nbsp; 位置号：{{locationInfo}}</div> -->
+      <div class="title">设备号：{{deviceId}} &nbsp;， 位置号：{{locationInfo}}</div>
 
       <el-row :gutter='20'
               type="flex"
@@ -211,9 +211,14 @@ export default {
         countArray.push(this.tableData[i].count);
       }
       let option2 = {
-        title: {
-          text:'位置号：'+ this.locationInfo,
-
+        title:{
+          text:"电池电量"
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+              type: 'shadow'
+          }
         },
         xAxis: {
             type: 'category',
@@ -229,6 +234,7 @@ export default {
           containLabel: true
         },
         series: [{
+            name: '电池电量',
             data: batteryArray,
             type: 'bar',
             showBackground: true,
@@ -241,7 +247,7 @@ export default {
 
       let option = {
         title: {
-          text:'设备号：'+ this.deviceId
+          text:'动作次数'
         },
         tooltip: {
           trigger: 'axis'
@@ -270,7 +276,7 @@ export default {
         },
         series: [
           {
-            name: 'Count',
+            name: '动作次数',
             type: 'line',
             data: countArray
           },

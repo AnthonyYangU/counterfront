@@ -7,7 +7,7 @@
         </div>
         <div class="container">
             <el-row :gutter="20" type="flex" justify="center">
-                <el-col :span="4"><div class="grid-content"><p>产品数量（个）</p><p>{{productNumber}}</p></div></el-col>
+                <el-col :span="4"><div class="grid-content"><p>设备数量（个）</p><p>{{productNumber}}</p></div></el-col>
                 <el-col :span="10"><div class="grid-content"></div></el-col>
                 <el-col :span="10">
                     <div class="grid-content grid-button">
@@ -43,7 +43,7 @@
                 <el-row class="search-content">
                     <el-col :span="18">
                         <!-- <el-input v-model="ruleForm2.deviceId" placeholder="请输入IMEI号"></el-input> -->
-                        <el-autocomplete v-model="searchInput" :fetch-suggestions="querySearch"  placeholder="请输入IMEI号" :trigger-on-focus="false"></el-autocomplete>
+                        <el-autocomplete v-model="searchInput" :fetch-suggestions="querySearch"  placeholder="请输入设备编号" :trigger-on-focus="false"></el-autocomplete>
                     </el-col>
                     <el-col :span="6"><el-button type="primary" @click="search">搜索</el-button></el-col>
                 </el-row>
