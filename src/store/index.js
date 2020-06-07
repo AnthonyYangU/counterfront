@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     registerState:true,
     device:'',
-    warningTable:[]
+    warningTable:[],
+    tableData:[],
   },
   mutations: {
     updateRegisterState(state,data){
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     updateWarningTable(state,data){
       state.warningTable = data
+    },
+    updateTableData(state,data){
+      state.tableData = data;
     }
   },
   actions: {

@@ -4,28 +4,29 @@
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>历史数据</el-breadcrumb-item>
           <div class="legend">
-            <span style="font-size:18px">图例:</span>
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-ok"></use>
-            </svg>
-            <span>正常</span>
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-low_battery"></use>
-            </svg>    
-            <span>电量低</span> 
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-sharpicons_warning"></use>
-            </svg>
-            <span>计数器内部故障</span>
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-warning"></use>
-            </svg>
-            <span>计数器网络故障</span>
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-ava_error"></use>
-            </svg>
-            <span>卡阻</span>
-          </div>
+                <!-- <span style="font-size:18px">图例:</span> -->
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-ok"></use>
+                </svg>
+                <span>正常</span>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-discharged-battery"></use>
+                </svg>
+                &nbsp;
+                <span>电量低</span>            
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-sharpicons_warning"></use>
+                </svg>
+                <span>计数器内部故障</span>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-warning"></use>
+                </svg>
+                <span>计数器网络故障</span>
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-ava_error"></use>
+                </svg>
+                <span>卡阻</span>
+            </div>
       </el-breadcrumb>
     </div>
 
@@ -34,56 +35,49 @@
                 :row-class-name="tableRowClassName"
                 :header-cell-style="headerRowClass"
                 style="width: 100%">
-        <el-table-column prop="id"
-                         label="Id"
-                         align="center">
-        </el-table-column>
+                
+                <el-table-column
+                    prop="count"
+                    label="动作次数"
+                    align="center">
+                </el-table-column>
 
-        <el-table-column prop="count"
-                         label="Count"
-                         align="center">
-        </el-table-column>
+                <el-table-column
+                    prop="battery"
+                    label="电池电量（V）"
+                    align="center">
+                </el-table-column>   
 
-        <el-table-column prop="battery"
-                         label="Battery"
-                         align="center">
-        </el-table-column>
+                <el-table-column
+                    prop="date"
+                    label="时间"
+                    align="center">
+                </el-table-column>
 
-        <el-table-column prop="date"
-                         label="Date"
-                         align="center">
-        </el-table-column>
-
-        <el-table-column prop="status"
-                         label="Status"
-                         align="center">
-          <template slot-scope="scope">
-            <svg v-if = "scope.row.battery<'3.00'" class="icon" aria-hidden="true">
-                <use xlink:href="#icon-low_battery"></use>
-            </svg>
-            &nbsp;            
-            <svg v-if="scope.row.status=='0'"
-                 class="icon"
-                 aria-hidden="true">
-              <use xlink:href="#icon-ok"></use>
-            </svg>
-            <svg v-else-if="scope.row.status=='1'"
-                 class="icon"
-                 aria-hidden="true">
-              <use xlink:href="#icon-sharpicons_warning"></use>
-            </svg>
-            <svg v-else-if="scope.row.status=='2'"
-                 class="icon"
-                 aria-hidden="true">
-              <use xlink:href="#icon-warning"></use>
-            </svg>
-            <svg v-else
-                 class="icon handlefull"
-                 aria-hidden="true">
-              <use xlink:href="#icon-ava_error"></use>
-            </svg>
-          </template>
-        </el-table-column>
+                <el-table-column
+                    prop="status"
+                    label="状态"
+                    align="center">
+                    <template slot-scope="scope">
+                        <svg v-if = "scope.row.battery<'50.00'" class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-discharged-battery"></use>
+                        </svg>
+                        &nbsp;
+                        <svg v-if = "scope.row.status=='0'" class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-ok"></use>
+                        </svg>
+                        <svg v-else-if="scope.row.status=='1'" class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-sharpicons_warning"></use>
+                        </svg>
+                        <svg v-else-if="scope.row.status=='2'" class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-warning"></use>
+                        </svg>
+                        <svg v-else class="icon handlefull" aria-hidden="true">
+                            <use xlink:href="#icon-ava_error"></use>
+                        </svg>
+                                                             
+                    </template>
+                </el-table-column>
       </el-table>
 
       <div class="block"
@@ -101,14 +95,18 @@
       </div>
 
       <el-card shadow="hover">
-        <div ref="myChart"
-             class="echart"></div>
+        <el-row :gutter="20">
+          <el-col :span='12'><div ref="myChart" class="echart"></div></el-col>
+          <el-col :span='12'><div ref="myChart2" class="echart"></div></el-col>
+        </el-row>
       </el-card>
 
-      <div class="title">设备号：{{deviceId}}</div>
+      <!-- <div class="title">设备号：{{deviceId}} &nbsp;&nbsp; 位置号：{{locationInfo}}</div> -->
+
       <el-row :gutter='20'
               type="flex"
-              justify="center">
+              justify="center"
+              style="margin-top:20px">
         <el-col :span='6'>
           <el-input placeholder="deviceId"
                     suffix-icon="el-icon-cherry"
@@ -130,10 +128,12 @@
 import axios from 'axios';
 let echarts = require('echarts/lib/echarts')
 require('echarts/lib/chart/line')
+require('echarts/lib/chart/bar')
 // 以下的组件按需引入
 require('echarts/lib/component/tooltip')   // tooltip组件
 require('echarts/lib/component/title')   //  title组件
 require('echarts/lib/component/legend')  // legend组件
+
 export default {
   data () {
     return {
@@ -142,6 +142,7 @@ export default {
       currentPage: 1,
       selectDevice: '',
       deviceId: '',
+      locationInfo:'',
     }
   },
   computed: {
@@ -169,22 +170,26 @@ export default {
       }
       axios.get('/api/detail', {
         params: {
-          deviceId: parseInt(this.selectDevice)
+          deviceId: this.selectDevice
         }
       }).then(response => {
         let res = response.data;
         let cdata = res.data
         if (res.status == '0') {
-          for (let i = 0; i < cdata.data.length; i++) {
-            cdata.data[i].id = i;
-          }
+          // for (let i = 0; i < cdata.data.length; i++) {
+          //   cdata.data[i].locationInfo = cdata.locationInfo;
+          // }
+        // console.log(cdata)
           this.deviceId = cdata.deviceId;
+          this.locationInfo = cdata.locationInfo;
           this.tableData = cdata.data;
+          // this.tableData.locationInfo = cdata.locationInfo;
         }
         // console.log(this.tableData)
         this.drawChart();
 
-      }).catch(() => {
+      }).catch((err) => {
+        console.log(err)
         this.$message.error("设备号输入错误")
       })
     },
@@ -205,16 +210,45 @@ export default {
         batteryArray.push(this.tableData[i].battery);
         countArray.push(this.tableData[i].count);
       }
+      let option2 = {
+        title: {
+          text:'位置号：'+ this.locationInfo,
+
+        },
+        xAxis: {
+            type: 'category',
+            data: idArray
+        },
+        yAxis: {
+            type: 'value'
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        series: [{
+            data: batteryArray,
+            type: 'bar',
+            showBackground: true,
+            backgroundStyle: {
+                color: 'rgba(220, 220, 220, 0.8)'
+            }
+        }]        
+      }
+
+
       let option = {
         title: {
-          text: '历史信息'
+          text:'设备号：'+ this.deviceId
         },
         tooltip: {
           trigger: 'axis'
         },
-        legend: {
-          data: ['Count', 'Battery']
-        },
+        // legend: {
+        //   data: ['Count', 'Battery']
+        // },
         grid: {
           left: '3%',
           right: '4%',
@@ -240,21 +274,33 @@ export default {
             type: 'line',
             data: countArray
           },
-          {
-            name: 'Battery',
-            type: 'line',
-            data: batteryArray
-          },
+          // {
+          //   name: 'Battery',
+          //   type: 'line',
+          //   data: batteryArray
+          // },
         ]
       };
       let mychart = echarts.init(this.$refs.myChart);
       // mychart.clear();
       mychart.setOption(option);
+      // console.log(option)
+
+      let mychart2 = echarts.init(this.$refs.myChart2);
+      mychart2.setOption(option2);
     }
   },
   mounted () {
     this.selectDevice = this.$store.state.device;
-    this.search();
+    if(this.selectDevice == ''){
+      axios.get('/api/findEquip').then(response=>{
+        let res = response.data;
+        this.selectDevice = res.data[0].deviceId;
+        this.search();
+      })
+    }else{
+      this.search();
+    }
   }
 }
 </script>
@@ -264,7 +310,7 @@ export default {
   font-weight: 400;
   line-height: 50px;
   margin: 10px 0;
-  font-size: 22px;
+  font-size: 18px;
   color: #1f2f3d;
 }
 

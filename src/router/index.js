@@ -31,8 +31,17 @@ Vue.use(VueRouter)
         path:'/history',
         component:()=>import('../components/History.vue'),
         meta:{requiresAuth:true,title:'历史数据'}
+      },
+      {
+        path:'/management',
+        component:()=>import('../components/Manage.vue'),
+        meta:{requiresAuth:true,title:'设备管理'}
       }
     ]
+  },
+  {
+    path:'/test',
+    component: resolve=>require(['../components/test.vue'],resolve)
   },
   {
     path: '/403',

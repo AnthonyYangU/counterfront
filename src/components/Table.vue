@@ -4,14 +4,15 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>设备总表</el-breadcrumb-item>
             <div class="legend">
-                <span style="font-size:18px">图例:</span>
+                <!-- <span style="font-size:18px">图例:</span> -->
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-ok"></use>
                 </svg>
                 <span>正常</span>
                 <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-low_battery"></use>
-                </svg>    
+                    <use xlink:href="#icon-discharged-battery"></use>
+                </svg>
+                &nbsp;
                 <span>电量低</span>            
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-sharpicons_warning"></use>
@@ -40,44 +41,50 @@
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>      -->
-                <el-table-column type="selection" width="55" align="center"></el-table-column>       
-                <el-table-column 
+                <el-table-column type="selection" width="30" align="center"></el-table-column>       
+                <!-- <el-table-column 
                     prop="id" 
-                    label="Id"
+                    label="设备号"
                     align="center">
-                </el-table-column>
+                </el-table-column> -->
                  
                 <el-table-column
                     prop="deviceId"
-                    label="IMEI Code"
+                    label="设备编号"
                     align="center">
                 </el-table-column>
 
+                <el-table-column 
+                    prop="locationInfo" 
+                    label="位置号"
+                    align="center">
+                </el-table-column>
+                
                 <el-table-column
                     prop="count"
-                    label="Move Count"
+                    label="动作次数"
                     align="center">
                 </el-table-column>
 
                 <el-table-column
                     prop="battery"
-                    label="Battery"
+                    label="电池电量（V）"
                     align="center">
                 </el-table-column>   
 
                 <el-table-column
                     prop="date"
-                    label="Time"
+                    label="时间"
                     align="center">
                 </el-table-column>
 
                 <el-table-column
                     prop="status"
-                    label="Status"
+                    label="状态"
                     align="center">
                     <template slot-scope="scope">
-                        <svg v-if = "scope.row.battery<'3.00'" class="icon" aria-hidden="true">
-                            <use xlink:href="#icon-low_battery"></use>
+                        <svg v-if = "scope.row.battery<'50.00'" class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-discharged-battery"></use>
                         </svg>
                         &nbsp;
                         <svg v-if = "scope.row.status=='0'" class="icon" aria-hidden="true">
@@ -96,8 +103,8 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="Operation">
-                    <template slot-scope="scope">
+                <el-table-column label="操作" align="center">
+                    <template slot-scope="scope" >
                         <el-button type="text" icon="el-icon-search" class="blue" size="small" @click="jumpHistory(scope.row.deviceId)">历史</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="handleDelete(scope.row.id)">删除</el-button>                    
                     </template>
@@ -181,7 +188,7 @@
                     axios.get('/api').then((response)=>{
                         // let date = new date();
                         let res = response.data;
-                        
+                        // console.log(res)
                         this.tableData = [];
                         // console.log(res)
                         if(res.status=="0"){
@@ -202,6 +209,7 @@
                                 this.tableData.push({
                                     id:jj,
                                     deviceId:res.data[jj].deviceId,
+                                    locationInfo:res.data[jj].locationInfo,
                                     count:res.data[jj].lastData.lastCount,
                                     battery:res.data[jj].lastData.lastBattery,
                                     date:rdate,
@@ -389,8 +397,12 @@
     .legend{
         float:right;
         margin-right:10px;
-        line-height: 100%;
+        line-height: 20px;
         span{
+            font-size:16px;
+            display: inline-block;
+            line-height:20px;
+            text-align: center;
             margin-right: 10px;
         }
     }

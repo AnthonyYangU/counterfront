@@ -74,7 +74,12 @@
                         icon:'el-icon-warning',
                         index:'tabs',
                         title:'报警列表'
-                    } 
+                    },
+                    {
+                        icon:'el-icon-circle-plus-outline',
+                        index:'management',
+                        title:'设备管理'
+                    }
                     // {
                     //     icon:'el-icon-warning',
                     //     index:'geo',

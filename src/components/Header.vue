@@ -126,6 +126,7 @@ export default {
     },
     warningFlash () {
       var warningTable = [];
+      // let tableData = [];
       axios.get('/api').then(response => {
         let res = response.data;
         if (res.status == '0') {
@@ -145,7 +146,8 @@ export default {
                 count: res.data[jj].lastData.lastCount,
                 battery: res.data[jj].lastData.lastBattery,
                 date: rdate,
-                status: status
+                status: status,
+                locationInfo:res.data[jj].locationInfo
               })
             }
           }
