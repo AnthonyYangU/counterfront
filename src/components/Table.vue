@@ -3,91 +3,71 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>设备总表</el-breadcrumb-item>
-            <div class="legend">
-                <!-- <span style="font-size:18px">图例:</span> -->
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-ok"></use>
-                </svg>
-                <span>正常</span>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-discharged-battery"></use>
-                </svg>
-                &nbsp;
-                <span>电量低</span>            
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-sharpicons_warning"></use>
-                </svg>
-                <span>计数器内部故障</span>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-warning"></use>
-                </svg>
-                <span>计数器网络故障</span>
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-ava_error"></use>
-                </svg>
-                <span>卡阻</span>
-            </div>
+                <div class="legend">
+                    <!-- <span style="font-size:18px">图例:</span> -->
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-ok"></use>
+                    </svg>
+                    <span>正常</span>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-discharged-battery"></use>
+                    </svg>
+                    &nbsp;
+                    <span>电量低</span>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-sharpicons_warning"></use>
+                    </svg>
+                    <span>计数器内部故障</span>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-warning"></use>
+                    </svg>
+                    <span>计数器网络故障</span>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-ava_error"></use>
+                    </svg>
+                    <span>卡阻</span>
+                </div>
             </el-breadcrumb>
         </div>
         <div class="container">
 
 
-            <el-table
-            :row-class-name="tableRowClassName"
-            :header-cell-style="headerRowClass"
-            :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)"
-            style="width: 100%" @selection-change="handleSelectionChange" >
-                    <!-- <template slot-scope="scope">
+            <el-table :row-class-name="tableRowClassName" :header-cell-style="headerRowClass"
+                :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%"
+                @selection-change="handleSelectionChange">
+                <!-- <template slot-scope="scope">
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>      -->
-                <el-table-column type="selection" width="30" align="center"></el-table-column>       
+                <el-table-column type="selection" width="30" align="center"></el-table-column>
                 <!-- <el-table-column 
                     prop="id" 
                     label="设备号"
                     align="center">
                 </el-table-column> -->
-                 
-                <el-table-column
-                    prop="deviceId"
-                    label="设备编号"
-                    align="center">
+
+                <el-table-column prop="deviceId" label="设备编号" align="center">
                 </el-table-column>
 
-                <el-table-column 
-                    prop="locationInfo" 
-                    label="位置号"
-                    align="center">
-                </el-table-column>
-                
-                <el-table-column
-                    prop="count"
-                    label="动作次数"
-                    align="center">
+                <el-table-column prop="locationInfo" label="位置号" align="center">
                 </el-table-column>
 
-                <el-table-column
-                    prop="battery"
-                    label="电池电量（V）"
-                    align="center">
-                </el-table-column>   
-
-                <el-table-column
-                    prop="date"
-                    label="时间"
-                    align="center">
+                <el-table-column prop="count" label="动作次数" align="center">
                 </el-table-column>
 
-                <el-table-column
-                    prop="status"
-                    label="状态"
-                    align="center">
+                <el-table-column prop="battery" label="电池电量（V）" align="center">
+                </el-table-column>
+
+                <el-table-column prop="date" label="时间" align="center">
+                </el-table-column>
+
+                <el-table-column prop="status" label="状态" align="center">
                     <template slot-scope="scope">
-                        <svg v-if = "scope.row.battery<'50.00'" class="icon" aria-hidden="true">
+                        <svg v-if="scope.row.battery<'2.70'" class="icon" aria-hidden="true">
                             <use xlink:href="#icon-discharged-battery"></use>
                         </svg>
                         &nbsp;
-                        <svg v-if = "scope.row.status=='0'" class="icon" aria-hidden="true">
+                        <svg v-if="scope.row.status=='0'" class="icon" aria-hidden="true">
                             <use xlink:href="#icon-ok"></use>
                         </svg>
                         <svg v-else-if="scope.row.status=='1'" class="icon" aria-hidden="true">
@@ -99,41 +79,36 @@
                         <svg v-else class="icon handlefull" aria-hidden="true">
                             <use xlink:href="#icon-ava_error"></use>
                         </svg>
-                                                             
+
                     </template>
                 </el-table-column>
 
                 <el-table-column label="操作" align="center">
-                    <template slot-scope="scope" >
-                        <el-button type="text" icon="el-icon-search" class="blue" size="small" @click="jumpHistory(scope.row.deviceId)">历史</el-button>
-                        <el-button type="text" icon="el-icon-delete" class="red" size="small" @click="handleDelete(scope.row.id)">删除</el-button>                    
+                    <template slot-scope="scope">
+                        <el-button type="text" icon="el-icon-search" class="blue" size="small"
+                            @click="jumpHistory(scope.row.deviceId)">历史</el-button>
+                        <el-button type="text" icon="el-icon-delete" class="red" size="small"
+                            @click="handleDelete(scope.row.id)">删除</el-button>
                     </template>
-                </el-table-column>             
-            </el-table>                         
+                </el-table-column>
+            </el-table>
 
             <div class="block" style="margin-top:10px;">
-                <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :page-sizes="[10, 20, 30]"
-                :page-size="pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="tableData.length"
-                prev-text="上一页"
-                next-text="下一页"
-                >
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                    :current-page="currentPage" :page-sizes="[10, 20, 30]" :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper" :total="tableData.length" prev-text="上一页"
+                    next-text="下一页">
                 </el-pagination>
             </div>
             <br>
             <el-button type="primary" icon="el-icon-delete" @click="handleDeleteMany">批量删除</el-button>
             <!-- <el-button type="primary" icon="el-icon-download" @click = "export2Excel">导出表格</el-button> -->
-            <br/>
-            <br/>
-            
+            <br />
+            <br />
+
             <!-- <el-button @click="test">test</el-button> -->
         </div>
-        
+
 
         <!-- 删除提示框 -->
         <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
@@ -161,180 +136,190 @@
         name: 'basetable',
         data() {
             return {
-                delVisible:false,
-                delManyVisible:false,
-                pageSize:10,
+                delVisible: false,
+                delManyVisible: false,
+                pageSize: 10,
                 tableData: [],
-                completeData:[],
+                completeData: [],
                 // select_word:'',
                 currentPage: 1,
-                selectDel:[],
-                selectedDel:[],
-                len:0
+                selectDel: [],
+                selectedDel: [],
+                len: 0
             }
         },
-        mounted(){
+        mounted() {
             this.init();
-            this.initTimer = setInterval(()=>{
+            this.initTimer = setInterval(() => {
                 this.init();
-            },60000);
+            }, 60000);
         },
-        beforeDestroy(){
+        beforeDestroy() {
             clearInterval(this.initTimer);
             this.initTimer = null;
         },
         methods: {
-                init(){
-                    axios.get('/api').then((response)=>{
-                        // let date = new date();
-                        let res = response.data;
-                        // console.log(res)
-                        this.tableData = [];
-                        // console.log(res)
-                        if(res.status=="0"){
-                            
-                            this.len = res.data.length;
-                            let date = new Date();
-                            for(let jj=0;jj<this.len;jj++){
-                                let status = res.data[jj].lastData.lastStatus;
-                                let rdate = res.data[jj].lastData.lastDate
-                                if(status=='0'||status=='1'){
-                                    let date2 = new Date(rdate)
-                                    if(date-date2>86400000){
-                                        status = '2'
-                                    }
+            init() {
+                axios.get('/api').then((response) => {
+                    // let date = new date();
+                    let res = response.data;
+                    // console.log(res)
+                    this.tableData = [];
+                    // console.log(res)
+                    if (res.status == "0") {
+
+                        this.len = res.data.length;
+                        let date = new Date();
+                        for (let jj = 0; jj < this.len; jj++) {
+                            let status = res.data[jj].lastData.lastStatus;
+                            let rdate = res.data[jj].lastData.lastDate
+                            if (status == '0' || status == '1') {
+                                let date2 = new Date(rdate)
+                                if (date - date2 > 86400000) {
+                                    status = '2'
                                 }
-                                // res.data[jj].id=jj;
-                                
-                                this.tableData.push({
-                                    id:jj,
-                                    deviceId:res.data[jj].deviceId,
-                                    locationInfo:res.data[jj].locationInfo,
-                                    count:res.data[jj].lastData.lastCount,
-                                    battery:res.data[jj].lastData.lastBattery,
-                                    date:rdate,
-                                    status:status
-                                })
-                                this.completeData[jj] = res.data[jj]._id;
                             }
-                            // this.tableData = res.data;
-                        }else{
-                            this.tableData = [];
+                            // res.data[jj].id=jj;
+
+                            this.tableData.push({
+                                id: jj,
+                                deviceId: res.data[jj].deviceId,
+                                locationInfo: res.data[jj].locationInfo,
+                                count: res.data[jj].lastData.lastCount,
+                                battery: res.data[jj].lastData.lastBattery,
+                                date: rdate,
+                                status: status
+                            })
+                            this.completeData[jj] = res.data[jj]._id;
                         }
-                    })                    
-                },
-                tableRowClassName({row, rowIndex}) {
-                    if(row);
-                    if (rowIndex%2 == 1) {
+                        // this.tableData = res.data;
+                    } else {
+                        this.tableData = [];
+                    }
+                })
+            },
+            tableRowClassName({
+                row,
+                rowIndex
+            }) {
+                if (row);
+                if (rowIndex % 2 == 1) {
                     return 'success-row';
-                    } else{
-                        return '';
-                    }
-                },
-                headerRowClass({row, column, rowIndex, columnIndex}){
+                } else {
+                    return '';
+                }
+            },
+            headerRowClass({
+                row,
+                column,
+                rowIndex,
+                columnIndex
+            }) {
                 //表头的背景颜色
-                    if(row||column||columnIndex);
+                if (row || column || columnIndex);
 
-                    if(rowIndex==0){
-                        return 'background:oldlace'
-                    }
-                },
-                handleSelectionChange(val) {
-                    this.selectDel = val
-                    // console.log(this.selectDel)
-                },
-                handleDelete(id){
-                    this.delVisible = true;
-                    this.selectId = this.completeData[id]
-                },
-                handleDeleteMany(){
-                    this.selectedDel = this.selectDel;
-                    this.delManyVisible = true;
-                },
-                // handleDeleteAll(){
-                //     this.allVisible = true;
-                // },
-                handleSizeChange(val) {
-                    // console.log(`每页 ${val} 条`);
-                    this.pageSize = val;
-                },
-                handleCurrentChange(val) {
-                    // console.log(`当前页: ${val}`);
-                    this.currentPage = val;
-                },
-                jumpHistory(deviceId){
-                    this.$store.commit('updateDevice',deviceId);
-                    this.$router.push('/history')
-                },
-                checkTime(i){
-                    if (i < 10) { i = "0" + i }
-                    return i
-                },
-                transDate(date){
-                    let d = new Date(date);
-                    let y = d.getFullYear(),
-                        m = d.getMonth() + 1,
-                        day = d.getDate();
-                    m = this.checkTime(m);
-                    day = this.checkTime(day);
-                    return y + '-' + m + '-' + day
-                },
-                transTime(time){
-                    let t = new Date(time);
-                    let h = t.getHours(),
-                        m = t.getMinutes(),
-                        s = t.getSeconds()
-                    h = this.checkTime(h);
-                    m = this.checkTime(m);
-                    s = this.checkTime(s);
-                    return h + ":" + m + ":" + s
-                },
-                find(data){
-                    for(let ite=0;ite<this.len;ite++){
-                        if(this.completeData[ite]==data)
-                            return ite;
-                    }
-                },
-                deleteRow(){
-                    this.delVisible = false;
-                    console.log(this.selectId)
-                    if(this.selectId!=''){
-                        axios.get('/api/delete',{
-                            params:{
-                                _id:this.selectId
-                            }
-                        }).then(()=>{
-                            this.delVisible = false;
-                            this.$message.success('删除成功');
-                            this.init();
-                        })
-                    }              
-                },
-                deleteMany(){
-                    this.$message.success('删除成功');
-                    // console.log(this.selectDel)
-                    // this.allVisible = false;
-                    // console.log(this.selectDel)
-                    if(this.selectedDel.length != 0){
-                        let delArray = [];
-                        
-                        for(let i=0;i<this.selectedDel.length;i++){
-                            delArray.push(this.selectedDel[i].deviceId)
+                if (rowIndex == 0) {
+                    return 'background:oldlace'
+                }
+            },
+            handleSelectionChange(val) {
+                this.selectDel = val
+                // console.log(this.selectDel)
+            },
+            handleDelete(id) {
+                this.delVisible = true;
+                this.selectId = this.completeData[id]
+            },
+            handleDeleteMany() {
+                this.selectedDel = this.selectDel;
+                this.delManyVisible = true;
+            },
+            // handleDeleteAll(){
+            //     this.allVisible = true;
+            // },
+            handleSizeChange(val) {
+                // console.log(`每页 ${val} 条`);
+                this.pageSize = val;
+            },
+            handleCurrentChange(val) {
+                // console.log(`当前页: ${val}`);
+                this.currentPage = val;
+            },
+            jumpHistory(deviceId) {
+                this.$store.commit('updateDevice', deviceId);
+                this.$router.push('/history')
+            },
+            checkTime(i) {
+                if (i < 10) {
+                    i = "0" + i
+                }
+                return i
+            },
+            transDate(date) {
+                let d = new Date(date);
+                let y = d.getFullYear(),
+                    m = d.getMonth() + 1,
+                    day = d.getDate();
+                m = this.checkTime(m);
+                day = this.checkTime(day);
+                return y + '-' + m + '-' + day
+            },
+            transTime(time) {
+                let t = new Date(time);
+                let h = t.getHours(),
+                    m = t.getMinutes(),
+                    s = t.getSeconds()
+                h = this.checkTime(h);
+                m = this.checkTime(m);
+                s = this.checkTime(s);
+                return h + ":" + m + ":" + s
+            },
+            find(data) {
+                for (let ite = 0; ite < this.len; ite++) {
+                    if (this.completeData[ite] == data)
+                        return ite;
+                }
+            },
+            deleteRow() {
+                this.delVisible = false;
+                console.log(this.selectId)
+                if (this.selectId != '') {
+                    axios.get('/api/delete', {
+                        params: {
+                            _id: this.selectId
                         }
+                    }).then(() => {
+                        this.delVisible = false;
+                        this.$message.success('删除成功');
+                        this.init();
+                    })
+                }
+            },
+            deleteMany() {
+                this.$message.success('删除成功');
+                // console.log(this.selectDel)
+                // this.allVisible = false;
+                // console.log(this.selectDel)
+                if (this.selectedDel.length != 0) {
+                    let delArray = [];
 
-                        axios.post("/api/dm",{
-                            delArray:delArray
-                        }).then((response)=>{
-                            
-                            let res = response.data;
-                            if(res.status == '0'){
-                                this.delManyVisible = false
-                                this.$message.success("批量删除成功")
-                                this.init();
-                            }
-                        })
-                    }         
-                },
+                    for (let i = 0; i < this.selectedDel.length; i++) {
+                        delArray.push(this.selectedDel[i].deviceId)
+                    }
+
+                    axios.post("/api/dm", {
+                        delArray: delArray
+                    }).then((response) => {
+
+                        let res = response.data;
+                        if (res.status == '0') {
+                            this.delManyVisible = false
+                            this.$message.success("批量删除成功")
+                            this.init();
+                        }
+                    })
+                }
+            },
             //     export2Excel() {
             //         require.ensure([], () => {
 
@@ -355,16 +340,16 @@
             //     formatJson(filterVal, jsonData) {
             //         return jsonData.map(v => filterVal.map(j => v[j]))  
             //     }
-                
-            }
-    }
 
+        }
+    }
 </script>
 
 <style lang="less">
-  .el-table .success-row {
-    background: #f0f9eb;
-  }
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
+
     .handle-box {
         margin-bottom: 20px;
     }
@@ -377,31 +362,38 @@
         width: 300px;
         display: inline-block;
     }
-    .del-dialog-cnt{
+
+    .del-dialog-cnt {
         font-size: 16px;
         text-align: center
     }
-    .table{
+
+    .table {
         width: 100%;
         font-size: 14px;
     }
-    .red{
+
+    .red {
         color: #ff0000;
     }
-    .blue{
-        color:blue
+
+    .blue {
+        color: blue
     }
-    .mr10{
+
+    .mr10 {
         margin-right: 10px;
     }
-    .legend{
-        float:right;
-        margin-right:10px;
+
+    .legend {
+        float: right;
+        margin-right: 10px;
         line-height: 20px;
-        span{
-            font-size:16px;
+
+        span {
+            font-size: 16px;
             display: inline-block;
-            line-height:20px;
+            line-height: 20px;
             text-align: center;
             margin-right: 10px;
         }
